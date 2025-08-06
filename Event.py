@@ -1,28 +1,37 @@
 import pandas as pd
 
-# ✅ Dataset
-hotel_data = pd.DataFrame({
-    "Hotel ID": [1, 2, 3, 4, 5],
-    "Hotel Name": ["Grand Stay", "Comfort Inn", "Luxury Palace", "Budget Lodge", "Ocean View"],
-    "Rating": [4.5, 3.8, 4.9, 3.2, 4.3],
-    "Price Per Night": [2500, 1800, 4000, 1200, 3200]
+# ✅ Sample Event Dataset
+event_data = pd.DataFrame({
+    "Event ID": [201, 202, 203, 204, 205],
+    "Event Name": ["Tech Summit", "Music Fest", "Job Fair", "Food Carnival", "Book Launch"],
+    "Location": ["New York", "Los Angeles", "Chicago", "New York", "Boston"],
+    "Registered People": [120, 200, 75, 180, 50],
+    "Entry Fee": [50, 30, 0, 20, 10]
 })
 
-# ✅ Function 1 - Filter hotels by minimum rating
-def filter_hotels_by_rating(df, min_rating):
+# ✅ Function 1 - Total number of people
+def get_total_people_registered(df):
     """
-    Filters and returns hotels with rating greater than or equal to min_rating.
+    Returns the total number of registered people for all events.
     """
-    return df[df["Rating"] >= min_rating]
+    return int(df["Registered People"].sum())
 
-# ✅ Function 2 - Calculate average price per night
-def get_average_price(df):
+# ✅ Function 2 - Number of events with Entry Fee > 10
+def count_events_with_high_fees(df):
     """
-    Returns average price per night from the dataset.
+    Returns the number of events where the entry fee is greater than 10.
     """
-    return round(df["Price Per Night"].mean(), 2)
+    return df[df["Entry Fee"] > 10].shape[0]
 
-# ✅ Sample run block
+# ✅ Function 3 - Count events in New York
+def count_events_in_newyork(df):
+    """
+    Returns the number of events that are happening in New York.
+    """
+    return df[df["Location"].str.lower() == "new york"].shape[0]
+
+# ✅ Sample Execution
 if __name__ == "__main__":
-    print("Hotels with Rating >= 4.0:\n", filter_hotels_by_rating(hotel_data, 4.0))
-    print("Average Price Per Night:", get_average_price(hotel_data))
+    print("Total Registered People:", get_total_people_registered(event_data))
+    print("Events with Entry Fee > 10:", count_events_with_high_fees(event_data))
+    print("Events in New York:", count_events_in_newyork(event_data))
