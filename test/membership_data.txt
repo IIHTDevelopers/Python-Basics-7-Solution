@@ -1,5 +1,0 @@
-John, Gold, 2024-01-15, 2025-01-15, Paid
-Alice, Silver, 2024-02-01, 2025-02-01, Unpaid
-Bob, Platinum, 2024-03-10, 2025-03-10, Paid
-Emma, Gold, 2024-04-20, 2025-04-20, Paid
-Mike, Silver, 2024-05-05, 2025-05-05, Unpaid
