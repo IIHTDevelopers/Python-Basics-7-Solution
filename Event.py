@@ -1,29 +1,28 @@
-    # Event Management System
+import pandas as pd
 
-from datetime import datetime
+# ✅ Dataset
+hotel_data = pd.DataFrame({
+    "Hotel ID": [1, 2, 3, 4, 5],
+    "Hotel Name": ["Grand Stay", "Comfort Inn", "Luxury Palace", "Budget Lodge", "Ocean View"],
+    "Rating": [4.5, 3.8, 4.9, 3.2, 4.3],
+    "Price Per Night": [2500, 1800, 4000, 1200, 3200]
+})
 
-events = [
-    ("Tech Conference", "2025-03-15", "2025-03-17", "New York"),
-    ("Music Festival", "2025-04-20", "2025-04-22", "Los Angeles"),
-    ("Art Exhibition", "2025-05-10", "2025-05-15", "Paris"),
-    ("Startup Meetup", "2025-06-05", "2025-06-06", "London"),
-    ("AI Summit", "2025-07-18", "2025-07-20", "Tokyo")
-]
+# ✅ Function 1 - Filter hotels by minimum rating
+def filter_hotels_by_rating(df, min_rating):
+    """
+    Filters and returns hotels with rating greater than or equal to min_rating.
+    """
+    return df[df["Rating"] >= min_rating]
 
-def display_upcoming_events():
-        print("\nUpcoming Events:")
-        for event in events:
-            print(f"- {event[0]} from {event[1]} to {event[2]} at {event[3]}")
+# ✅ Function 2 - Calculate average price per night
+def get_average_price(df):
+    """
+    Returns average price per night from the dataset.
+    """
+    return round(df["Price Per Night"].mean(), 2)
 
-def count_total_events():
-        print("\nTotal number of events:", len(events))
-
-def longest_event_duration():
-        max_duration_event = max(events, key=lambda e: (datetime.strptime(e[2], "%Y-%m-%d") - datetime.strptime(e[1], "%Y-%m-%d")).days)
-        duration = (datetime.strptime(max_duration_event[2], "%Y-%m-%d") - datetime.strptime(max_duration_event[1], "%Y-%m-%d")).days
-        print(f"\nEvent with the longest duration: {max_duration_event[0]} ({duration} days)")
-
+# ✅ Sample run block
 if __name__ == "__main__":
-        display_upcoming_events()
-        count_total_events()
-        longest_event_duration()
+    print("Hotels with Rating >= 4.0:\n", filter_hotels_by_rating(hotel_data, 4.0))
+    print("Average Price Per Night:", get_average_price(hotel_data))
