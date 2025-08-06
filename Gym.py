@@ -1,49 +1,48 @@
-import os
+import pandas as pd
 
+# ✅ Sample Dataset
+membership_data = pd.DataFrame({
+    "Member ID": [101, 102, 103, 104, 105],
+    "Name": ["Alice", "Bob", "Charlie", "Diana", "Ethan"],
+    "Membership Type": ["Gold", "Silver", "Gold", "Bronze", "Silver"],
+    "Monthly Fee": [1500, 1000, 1500, 800, 1000],
+    "Months Active": [12, 8, 6, 3, 10]
+})
 
-def create_membership_file():
-    filename = "membership_data.txt"
-    data = """John, Gold, 2024-01-15, 2025-01-15, Paid
-Alice, Silver, 2024-02-01, 2025-02-01, Unpaid
-Bob, Platinum, 2024-03-10, 2025-03-10, Paid
-Emma, Gold, 2024-04-20, 2025-04-20, Paid
-Mike, Silver, 2024-05-05, 2025-05-05, Unpaid"""
+# ✅ Function 1: Arithmetic Logic - Total revenue per member
+def calculate_total_contribution(df, member_id):
+    """
+    Return the total contribution made by a member using Monthly Fee × Months Active.
+    """
+    member = df[df["Member ID"] == member_id]
+    if not member.empty:
+        return int(member["Monthly Fee"].values[0] * member["Months Active"].values[0])
+    return 0
 
-    with open(filename, "w") as file:
-        file.write(data)
+# ✅ Function 2: Loop - Count members per membership type
+def count_members_per_type(df):
+    """
+    Returns a dictionary with count of members in each membership type using a loop.
+    """
+    counts = {}
+    for mtype in df["Membership Type"]:
+        if mtype in counts:
+            counts[mtype] += 1
+        else:
+            counts[mtype] = 1
+    return counts
 
-    print(f"Sample file '{filename}' created successfully.")
+def is_alice_long_term(df):
+    """
+    Returns True if Alice has been active for more than 12 months.
+    """
+    alice = df[df["Name"].str.lower() == "alice"]
+    if not alice.empty:
+        return alice["Months Active"].values[0] > 12
+    return False
 
-
-def check_membership_status():
-    active_members = {}
-    with open("membership_data.txt", "r") as file:
-        for line in file:
-            name, plan, start_date, end_date, status = line.strip().split(", ")
-            if status == "Paid":
-                active_members[name] = {"plan": plan, "end_date": end_date}
-    print("\nActive Gym Members:")
-    for member, details in active_members.items():
-        print(f"- {member}: {details['plan']} Plan (Valid till {details['end_date']})")
-
-
-def count_members_by_plan():
-    plan_counts = {"Gold": 0, "Silver": 0, "Platinum": 0}
-    
-    with open("membership_data.txt", "r") as file:
-        for line in file:
-            name, plan, start_date, end_date, status = line.strip().split(", ")
-            if plan in plan_counts:
-                plan_counts[plan] += 1
-    
-    print("\nMembership Plan Distribution:")
-    for plan, count in plan_counts.items():
-        print(f"- {plan}: {count} members")
-    
-    return plan_counts
-
-
+# ✅ Sample Execution
 if __name__ == "__main__":
-    create_membership_file()
-    check_membership_status()
-    count_members_by_plan()
+    print("Total Contribution by Member 101:", calculate_total_contribution(membership_data, 101))
+    print("Count of Members Per Type:", count_members_per_type(membership_data))
+    print("Is Alice a long-term member (>12 months)?", is_alice_long_term(membership_data))
